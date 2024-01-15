@@ -1,7 +1,5 @@
-from datetime import datetime
 import time
 
-import pytz
 import schedule
 from dotenv import load_dotenv
 
@@ -11,24 +9,29 @@ load_dotenv()
 
 
 def job(city):
-    xianWeatherAssistant = WeatherAssiatant.WeatherSub(city)
-    xianWeatherAssistant.process()
+    max_attempts = 3  # 设置最大尝试次数
+    for attempt in range(max_attempts):
+        try:
+            xianWeatherAssistant = WeatherAssistant.WeatherSub(city)
+            xianWeatherAssistant.process()
+            break  # 如果成功执行，跳出循环
+        except Exception as e:
+            print(f"Attempt {attempt+1} failed with error: {e}")
+            if attempt + 1 == max_attempts:
+                print("Reached maximum number of attempts. Job failed.")
 
 
-def hourly_job(city):
-    # 获取当前的时间
-    tz = pytz.timezone('Asia/Shanghai')
-    current_time = datetime.now(tz)
-
-    # 如果当前的时间在 8:00 到 18:00 之间，那么执行 job 函数
-    if 8 <= current_time.hour <= 18:
-        job(city)
+def schedule_task(task, parameter):
+    # 安排每天 8:00 到 18:00 之间的任务
+    for hour in range(8, 19):
+        schedule.every().day.at(f"{hour:02d}:00").do(task, parameter)
 
 
-schedule.every().hour.do(hourly_job(city='xian'))
-schedule.every().hour.do(hourly_job(city='Beijing'))
+schedule_task(job, "xian")
+schedule_task(job, "beijing")
+
 
 if __name__ == '__main__':
     while True:
         schedule.run_pending()
-        time.sleep(60)
+        time.sleep(1)

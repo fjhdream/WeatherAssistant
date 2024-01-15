@@ -9,11 +9,13 @@ from Config.LoggerConfig import logger
 
 load_dotenv()
 
+
 def get_weather(api_key, country_name, country_code):
     base_url = "http://api.openweathermap.org/data/2.5/weather"
     query = f'?q={country_name},{country_code}&APPID={api_key}'
     complete_url = base_url + query
     response = requests.get(complete_url)
+    logger.info("weather query resp: {}", response)
     weather_data = response.json()
     if weather_data['cod'] == 200:
         return weather_data
@@ -75,4 +77,3 @@ def description(country_name):
     description = weather_description(weather)
     print(description)
     return description
-

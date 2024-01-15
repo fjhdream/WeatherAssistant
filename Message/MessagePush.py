@@ -3,6 +3,7 @@ import urllib.parse
 import urllib.request
 import requests
 from dotenv import load_dotenv
+from Config.LoggerConfig import logger
 
 load_dotenv()
 
@@ -13,8 +14,17 @@ topic = os.environ["PUSH_NTFY_SUB_PREFIX"]
 
 
 def send(desp='', city=''):
-    send_to_ntfy(desp, city)
-    send_to_server(desp)
+    try:
+        send_to_ntfy(desp, city)
+    except Exception as e:
+        logger.error("Send to ntfy failed")
+        print(e)
+
+    try:
+        send_to_server(desp)
+    except Exception as e:
+        logger.error("Send to server failed")
+        print(e)
 
 
 # 推动给 ntfy

@@ -1,22 +1,16 @@
-import os
-
 from datetime import datetime
 
-from dotenv import load_dotenv
-
-from Config.LoggerConfig import logger
-from Query.WetherQuery import description
 import pytz
-
-from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
+from langchain_openai import ChatOpenAI
+
+from Config.LoggerConfig import logger
+from Query.WetherQuery import description
 
 load_dotenv()
-
-os.environ["OPENAI_API_KEY"] = os.environ["OPENAI_API_KEY"]
-os.environ["OPENAI_API_BASE"] = os.environ["OPENAI_API_BASE"]
 
 prompt = ChatPromptTemplate.from_template(
     """

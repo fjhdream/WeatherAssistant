@@ -12,6 +12,19 @@ pip install -r requirements.txt
 
 ## Usage
 
+1. Copy the `.env.example` file and rename it to `.env`:
+    ```bash
+    cp .env.example .env
+    ```
+2. Open the .env file and fill in all the environment variables. These variables include:
+   - WEATHER_OPENWEATHER_API_KEY: The API key for the weather query
+   - WEATHER_COUNTRY_CODE: The country code for querying the weather
+   - PUSH_SERVER_SEND_KEY: The key for the sever sauce
+   - PUSH_NTFY_SUB_PREFIX: The prefix for the push
+   - OPENAI_API_KEY: The API key for OPENAI
+   - OPENAI_API_BASE: The base URL for the OPENAI API
+3. Save the .env file and run your application.
+
 The main functionality of the application is encapsulated in the `WeatherSub` class. Here is a basic example of how to use it:
 
 ```python
@@ -25,6 +38,8 @@ weather.process()
 ```
 
 Replace `'city_name'` with the name of the city you are interested in.
+
+
 
 ## Scheduling
 
